@@ -20,18 +20,18 @@ NC='\033[0m' # No Color
 
 echo -e "\n${BLUE}Renaming variables and files...${NC}\n"
 
-sed -i s/$DUMMY_MODULE/$MODULE/g dev.Dockerfile
-sed -i s/$DUMMY_MODULE/$MODULE/g prod.Dockerfile
-sed -i s/$DUMMY_MODULE/$MODULE/g tests/context.py
-sed -i s/$DUMMY_MODULE/$MODULE/g tests/test_app.py
+sed -i '' s/$DUMMY_MODULE/$MODULE/g dev.Dockerfile
+sed -i '' s/$DUMMY_MODULE/$MODULE/g prod.Dockerfile
+sed -i '' s/$DUMMY_MODULE/$MODULE/g tests/context.py
+sed -i '' s/$DUMMY_MODULE/$MODULE/g tests/test_app.py
 mv $DUMMY_MODULE $MODULE
 
-sed -i s/$DUMMY_MODULE/$MODULE/g pytest.ini
-sed -i s/$DUMMY_MODULE/$MODULE/g setup.cfg
-sed -i s/$DUMMY_MODULE/$MODULE/g sonar-project.properties
-sed -i s~$DUMMY_REGISTRY~$REGISTRY~g Makefile
-sed -i s/example/$MODULE/g Makefile
-sed -i s/$DUMMY_MODULE/$MODULE/g Makefile
+sed -i '' s/$DUMMY_MODULE/$MODULE/g pytest.ini
+sed -i '' s/$DUMMY_MODULE/$MODULE/g setup.cfg
+sed -i '' s/$DUMMY_MODULE/$MODULE/g sonar-project.properties
+sed -i '' s~$DUMMY_REGISTRY~$REGISTRY~g Makefile
+sed -i '' s/example/$MODULE/g Makefile
+sed -i '' s/$DUMMY_MODULE/$MODULE/g Makefile
 
 echo -e "\n${BLUE}Testing if everything works...${NC}\n"
 

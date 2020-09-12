@@ -1,8 +1,8 @@
 # The binary to build (just the basename).
-MODULE := blueprint
+MODULE := twinfluencers
 
 # Where to push the docker image.
-REGISTRY ?= docker.pkg.github.com/martinheinz/python-project-blueprint
+REGISTRY ?= docker.pkg.github.com/kbroughton
 
 IMAGE := $(REGISTRY)/$(MODULE)
 
@@ -45,6 +45,27 @@ build-dev:
 	    -e 's|{NAME}|$(MODULE)|g'        \
 	    -e 's|{VERSION}|$(TAG)|g'        \
 	    dev.Dockerfile | docker build -t $(IMAGE):$(TAG) -f- .
+
+build-jup:
+	@echo "\n${BLUE}Building Development image with labels:\n"
+	@echo "name: $(MODULE)"
+	@echo "version: $(TAG)${NC}\n"
+	@sed                                 \
+	    -e 's|{NAME}|$(MODULE)|g'        \
+	    -e 's|{VERSION}|$(TAG)|g'        \
+	    jup.Dockerfile | docker build -t $(IMAGE):jup-$(TAG) -f- .
+	@docker tag $(IMAGE):jup-$(TAG) $(IMAGE):jup-latest
+
+
+# Example: make shell CMD="-c 'date > datefile'"
+shell: build-jup
+	        @echo "\n${BLUE}Launching a shell in the containerized build environment...${NC}\n"
+        	        @docker-compose                                                 \
+                	        up                                                     \
+                        	-d                                                    \
+                        	--entrypoint /bin/bash                                  \
+                        	$(IMAGE):jup-$(TAG)                                                                             \
+                        
 
 # Example: make shell CMD="-c 'date > datefile'"
 shell: build-dev

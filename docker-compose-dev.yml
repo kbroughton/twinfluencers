@@ -1,0 +1,27 @@
+# Use docker-compose-dev.yml if you want your edits outside the container (pycharm or sublime) to affect
+# the working container jupyter notebook and docker runtime
+
+version: "3.4"
+services:
+  twinfluencers:
+    #build:
+    #  context: .
+    #  dockerfile: jup.Dockerfile
+    #  target: jup
+    image: docker.pkg.github.com/kbroughton/twinfluencers:jup-latest
+    working_dir: /twinfluencers/notebooks
+    volumes:
+      - ${PWD}:/twinfluencers
+    ports:
+      - 8888:8888
+    # To run in production, remove the "--allow-root" and 
+    # ensure the last line of the Dockerfile is 
+    # USER $NB_UID
+    #entrypoint: ["/bin/bash", "-c"]
+    entrypoint: [""]
+    command: ["jupyter", "notebook", "--port=8888", "--ip=0.0.0.0", "--allow-root"]
+    #command: ['tail', '-f', '/dev/null']
+  cloudflared:
+    image: cloudflare/cloudflared
+    ports: 
+     - 8083:8083
